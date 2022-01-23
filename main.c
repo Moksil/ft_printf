@@ -4,7 +4,7 @@
 int main(void)
 {
 	// int return_val;
-	ft_printf("ft_printf is\n%d", 123);
+	ft_printf("ft_printf is %d", 123);
 	// return_val = printf("%d", 1234);
 	// printf("%");
 	//printf("%d", return_val);

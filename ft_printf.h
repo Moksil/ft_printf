@@ -31,6 +31,9 @@ size_t	ft_strlen(const char *s);
 
 /* ----------------------------------------------- */
 
-int	ft_printf(const char *, ...);
+t_spec	get_specifier(const char *str, int n);
+void	specified_call(va_list ap, char specifier);
+void	d_handling(va_list ap);
+int		ft_printf(const char *, ...);
 
 #endif
