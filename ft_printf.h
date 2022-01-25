@@ -17,10 +17,17 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <stdio.h>
+
 typedef struct s_specifier
 {
+	char	flag;
+	int 	width;
+	int		precision;
+	int		len;
 	char	specifier;
-	char	*s_ptr;
+	char	*start_ptr;
+	char	*end_ptr;
 }					t_spec;
 
 /* -------------------- libft -------------------- */
@@ -28,12 +35,14 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
+int		ft_atoi(const char *nptr);
+int		ft_isdigit(int c);
 
 /* ----------------------------------------------- */
 
-t_spec	get_specifier(const char *str, int n);
-void	specified_call(va_list ap, char specifier);
-void	d_handling(va_list ap);
+char	*ft_strndup(char *src, int n);
+
+/* ----------------------------------------------- */
 int		ft_printf(const char *, ...);
 
 #endif
