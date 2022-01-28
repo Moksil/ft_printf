@@ -1,36 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sungmipa <sungmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/22 21:53:29 by sungmipa          #+#    #+#             */
-/*   Updated: 2022/01/22 21:53:30 by sungmipa         ###   ########.fr       */
+/*   Created: 2021/11/24 18:36:50 by sungmipa          #+#    #+#             */
+/*   Updated: 2021/11/24 18:36:55 by sungmipa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libft/libft.h"
-
-typedef struct s_specifier
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	flag;
-	int 	width;
-	int		precision;
-	int		len;
-	char	specifier;
-	char	*start_ptr;
-	char	*end_ptr;
-}					t_spec;
+	t_list	*cur;
+	t_list	*tmp;
 
-int		ft_putnbr_m_fd(int n, int fd);
-int		ft_putnbr_um_fd(unsigned int n, int fd);
-int		ft_printf(const char *, ...);
-
-#endif
+	cur = *lst;
+	while (cur)
+	{
+		tmp = cur;
+		cur = cur -> next;
+		del(tmp -> content);
+		free(tmp);
+	}
+	tmp = NULL;
+	*lst = NULL;
+}

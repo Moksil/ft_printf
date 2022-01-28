@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_putnbr_m_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sungmipa <sungmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/22 21:53:29 by sungmipa          #+#    #+#             */
-/*   Updated: 2022/01/22 21:53:30 by sungmipa         ###   ########.fr       */
+/*   Created: 2022/01/28 14:43:52 by sungmipa          #+#    #+#             */
+/*   Updated: 2022/01/28 14:43:53 by sungmipa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "ft_printf.h"
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libft/libft.h"
-
-typedef struct s_specifier
+int	ft_putnbr_m_fd(int n, int fd)
 {
-	char	flag;
-	int 	width;
-	int		precision;
-	int		len;
-	char	specifier;
-	char	*start_ptr;
-	char	*end_ptr;
-}					t_spec;
+	int		ret;
 
-int		ft_putnbr_m_fd(int n, int fd);
-int		ft_putnbr_um_fd(unsigned int n, int fd);
-int		ft_printf(const char *, ...);
-
-#endif
+	ret = 1;
+	if (n == -2147483648)
+	{
+		write(fd, "-2147483648", 11);
+		return (11);
+	}
+	else if (n < 0)
+	{
+		write(fd, "-", 1);
+		ret += ft_putnbr_m_fd((-1) * n, fd);
+	}
+	else if (n < 10)
+	{
+		ft_putchar_fd('0' + n, fd);
+		return (1);
+	}
+	else
+	{
+		ret += ft_putnbr_m_fd(n / 10, fd);
+		ft_putchar_fd('0' + (n % 10), fd);
+	}
+	return (ret);
+}

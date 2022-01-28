@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sungmipa <sungmipa@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: sungmipa <sungmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 17:16:53 by sungmipa          #+#    #+#             */
-/*   Updated: 2021/11/10 17:16:56 by sungmipa         ###   ########.fr       */
+/*   Created: 2021/11/24 18:36:17 by sungmipa          #+#    #+#             */
+/*   Updated: 2021/11/24 18:36:48 by sungmipa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_isdigit(int c)
+void	ft_lstadd_front(t_list **lst, t_list *new_node)
 {
-	if ((c >= '0' && c <= '9'))
-		return (1);
-	else
-		return (0);
+	t_list	*tmp;
+
+	tmp = *lst;
+	*lst = new_node;
+	ft_lstlast(new_node) -> next = tmp;
 }

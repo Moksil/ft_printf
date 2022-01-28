@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
 int		is_specifier(char c)
 {
 	if (c == '%' || c == 'c'|| c == 's' || c == 'p' ||	c == 'd'
@@ -93,7 +94,6 @@ int	d_handling(va_list* ap)
 {
 	int		d_val;
 	int		str_size;
-	char	*val_to_str;
 
 	d_val = va_arg(*ap, int);
 	str_size = ft_putnbr_m_fd(d_val, 1);
@@ -104,7 +104,6 @@ int	u_handling(va_list* ap)
 {
 	unsigned int	d_val;
 	int				str_size;
-	char			*val_to_str;
 
 	d_val = va_arg(*ap, int);
 	str_size = ft_putnbr_um_fd(d_val, 1);
@@ -123,7 +122,6 @@ int	s_handling(va_list* ap)
 {
 	char	*s_ptr;
 	int		str_size;
-	char	*str_from_ptr;
 	
 	s_ptr = va_arg(*ap, char *);
 	if (s_ptr == NULL)
@@ -190,37 +188,6 @@ int	call_dispenser(va_list* ap, char specifier)
 		ret = 0;
 	return (ret);
 }
-
-// int	ft_printf(const char *str, ...)
-// {
-// 	t_spec	spec_info;
-// 	const char	*prev;
-// 	const char	*cur;
-// 	int		i;
-// 	int		ret;
-// 	va_list *ap;
-// 	va_list sp;
-	
-// 	va_start(sp, str);
-// 	ap = &sp;
-// 	ret = 0;
-// 	i = 1;
-// 	prev = str;
-// 	cur = ft_strchr(str, '%');
-// 	while (cur)
-// 	{
-// 		spec_info = get_specifier_info(str, i++);
-// 		write(1, prev, cur - prev);
-// 		ret += call_dispenser(ap, spec_info.specifier) + (cur - prev);
-// 		cur += spec_info.len;
-// 		prev = cur;
-// 		cur = ft_strchr(cur, '%');
-// 	}
-// 	write(1, prev, ft_strchr(str, '\0') - prev);
-// 	ret += ft_strchr(str, '\0') - prev;
-// 	return (ret);
-// }
-
 
 char	*spec_validate(char *ptr)
 {
@@ -323,12 +290,7 @@ t_spec	get_specifier_info(const char *str, int n)
 			ptr = ft_strchr(ptr + 1, '%');
 	}
 	i = 0;
-	// ptr = spec_validate(ptr);
-	// if (ptr == NULL) -> 위의 문장에서 최종적으로 -1을 return해야하는 경우.
-	// if (ptr)
-		// ret = spec_parsing(ptr);
 	ret = spec_parsing(ptr);
-	// free(ptr);
 	return (ret);
 }
 

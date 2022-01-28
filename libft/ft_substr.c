@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sungmipa <sungmipa@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,50 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int	ft_putnbr_m_fd(int n, int fd)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int		ret;
+	char	*ret;
 
-	ret = 1;
-	if (n == -2147483648)
+	if (ft_strlen(s) <= start)
 	{
-		write(fd, "-2147483648", 11);
-		return (11);
+		ret = (char *)malloc(1);
+		if (ret == NULL)
+			return (NULL);
+		ret[0] = '\0';
 	}
-	else if (n < 0)
+	else if (ft_strlen(s) - start < len)
 	{
-		write(fd, "-", 1);
-		ret += ft_putnbr_m_fd((-1) * n, fd);
-	}
-	else if (n < 10)
-	{
-		ft_putchar_fd('0' + n, fd);
-		return (1);
+		ret = (char *)malloc(ft_strlen(s) - start + 1);
+		if (ret == NULL)
+			return (NULL);
+		ft_strlcpy(ret, &s[start], ft_strlen(s) - start + 1);
 	}
 	else
 	{
-		ret += ft_putnbr_m_fd(n / 10, fd);
-		ft_putchar_fd('0' + (n % 10), fd);
-	}
-	return (ret);
-}
-
-int	ft_putnbr_um_fd(unsigned int n, int fd)
-{
-	int		ret;
-
-	ret = 1;
-	if (n < 10)
-	{
-		ft_putchar_fd('0' + n, fd);
-		return (1);
-	}
-	else
-	{
-		ret += ft_putnbr_um_fd(n / 10, fd);
-		ft_putchar_fd('0' + (n % 10), fd);
+		ret = (char *)malloc(len + 1);
+		if (ret == NULL)
+			return (NULL);
+		ft_strlcpy(ret, &s[start], len + 1);
 	}
 	return (ret);
 }

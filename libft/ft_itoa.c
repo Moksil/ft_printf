@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"
-#include "ft_printf.h"
+#include "libft.h"
 
-static int	calc_digit(unsigned int n)
+static int	calc_digit(int n)
 {
 	int	digit;
 
@@ -69,27 +68,6 @@ char	*ft_itoa(int n)
 		return (handle_zero());
 	else if (n < 0)
 		return (handle_negnbr(n));
-	digit = calc_digit(n);
-	ret = (char *)malloc(digit + 1);
-	if (ret == NULL)
-		return (NULL);
-	ret[digit] = '\0';
-	while (n > 0)
-	{
-		ret[digit - 1] = '0' + (n % 10);
-		n /= 10;
-		digit--;
-	}
-	return (ret);
-}
-
-char	*ft_itoa_u(unsigned int n)
-{
-	int		digit;
-	char	*ret;
-
-	if (n == 0)
-		return (handle_zero());
 	digit = calc_digit(n);
 	ret = (char *)malloc(digit + 1);
 	if (ret == NULL)

@@ -1,36 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sungmipa <sungmipa@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/22 21:53:29 by sungmipa          #+#    #+#             */
-/*   Updated: 2022/01/22 21:53:30 by sungmipa         ###   ########.fr       */
+/*   Created: 2021/11/24 18:37:47 by sungmipa          #+#    #+#             */
+/*   Updated: 2021/11/24 18:37:50 by sungmipa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libft/libft.h"
-
-typedef struct s_specifier
+t_list	*ft_lstnew(void *content)
 {
-	char	flag;
-	int 	width;
-	int		precision;
-	int		len;
-	char	specifier;
-	char	*start_ptr;
-	char	*end_ptr;
-}					t_spec;
+	t_list	*new_node;
 
-int		ft_putnbr_m_fd(int n, int fd);
-int		ft_putnbr_um_fd(unsigned int n, int fd);
-int		ft_printf(const char *, ...);
-
-#endif
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (new_node == NULL)
+		return (NULL);
+	new_node -> content = content;
+	new_node -> next = NULL;
+	return (new_node);
+}
