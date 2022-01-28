@@ -35,13 +35,14 @@ char	*ft_strchr(const char *s, int c);
 char	*ft_itoa(int n);
 char	*ft_strdup(const char *s);
 size_t	ft_strlen(const char *s);
-int		ft_atoi(const char *nptr);
 int		ft_isdigit(int c);
+void	ft_putchar_fd(char c, int fd);
 
 /* ----------------------------------------------- */
 
 char	*ft_strndup(char *src, int n);
-
+int		ft_putnbr_m_fd(int n, int fd);
+int		ft_putnbr_um_fd(unsigned int n, int fd);
 /* ----------------------------------------------- */
 int		ft_printf(const char *, ...);
 
