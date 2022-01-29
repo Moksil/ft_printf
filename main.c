@@ -44,7 +44,7 @@ int main(void)
 
 	// ft_printf("%S", NULL);
 	// write(1, "\b", 1);
-	printf("|, return : %d\n", ft_printf("|%0+ 000#+-30.5d", 123) -1);
+	printf("|, return : %d\n", ft_printf("|%0+ 000#+.-5d", 123) -1);
 
 	// printf("| len :%d\n", printf("   printf: %\n"));
 	// printf("| len :%d\n", ft_printf("ft_printf: %\n"));

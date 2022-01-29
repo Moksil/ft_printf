@@ -259,7 +259,7 @@ int	str_validation(const char *str)
 // flag : [-], [0], [+], [ ], [#]
 t_spec	check_minus_flag(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == '-' && i == 1)
+	if (i == 1 && mod_op_ptr[i] == '-')
 		ret.minus_flag = 1;
 	if (mod_op_ptr[i] == '-'
 		&& (mod_op_ptr[i - 1] == '0' || mod_op_ptr[i - 1] == ' '
@@ -274,7 +274,7 @@ t_spec	check_minus_flag(t_spec ret, char *mod_op_ptr, int i)
 
 t_spec	check_zero_flag(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == '0' && i == 1)
+	if (i == 1 && mod_op_ptr[i] == '0')
 		ret.zero_flag = 1;
 	if (ret.minus_flag == 0 && mod_op_ptr[i] == '0'
 		&& (mod_op_ptr[i - 1] == ' ' || mod_op_ptr[i - 1] == '+'
@@ -285,7 +285,7 @@ t_spec	check_zero_flag(t_spec ret, char *mod_op_ptr, int i)
 
 t_spec	check_plus_flag(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == '+' && i == 1)
+	if (i == 1 && mod_op_ptr[i] == '+')
 		ret.plus_flag = 1;
 	if (mod_op_ptr[i] == '+'
 		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == '0'
@@ -300,7 +300,7 @@ t_spec	check_plus_flag(t_spec ret, char *mod_op_ptr, int i)
 
 t_spec	check_space_flag(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == ' ' && i == 1)
+	if (i == 1 && mod_op_ptr[i] == ' ')
 		ret.space_flag = 1;
 	if (ret.plus_flag == 0 && mod_op_ptr[i] == '0'
 		&& (mod_op_ptr[i - 1] == ' ' || mod_op_ptr[i - 1] == '+'
@@ -311,7 +311,7 @@ t_spec	check_space_flag(t_spec ret, char *mod_op_ptr, int i)
 
 t_spec	check_sharp_flag(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == '#' && i == 1)
+	if (i == 1 && mod_op_ptr[i] == '#')
 		ret.sharp_flag = 1;
 	if (mod_op_ptr[i] == '#'
 		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == '0'
@@ -331,8 +331,13 @@ t_spec	check_width(t_spec ret, char *mod_op_ptr, int i)
 
 t_spec	check_precision(t_spec ret, char *mod_op_ptr, int i)
 {
-	if (mod_op_ptr[i] == '.' && ft_isdigit(mod_op_ptr[i + 1]))
-		ret.precision = ft_atoi(&(mod_op_ptr[i + 1]));
+	if (mod_op_ptr[i] == '.')
+	{
+		if (ft_isdigit(mod_op_ptr[i + 1]))
+			ret.precision = ft_atoi(&(mod_op_ptr[i + 1]));
+		else
+			ret.precision = 0;
+	}
 	return (ret);
 }
 
@@ -419,18 +424,18 @@ int	ft_printf(const char *str, ...)
 	while (cur)
 	{
 		spec_info = get_specifier_info(str, i++);
-		if (spec_info.minus_flag == 1)
-			write(1, "-", 1);
-		if (spec_info.zero_flag == 1)
-			write(1, "0", 1);
-		if (spec_info.plus_flag == 1)
-			write(1, "+", 1);
-		if (spec_info.space_flag == 1)
-			write(1, " ", 1);
-		if (spec_info.sharp_flag == 1)
-			write(1, "#", 1);
-		printf("\nwidth : %d\n", spec_info.width);
-		printf("precision : %d\n", spec_info.precision);
+		// if (spec_info.minus_flag == 1)
+		// 	write(1, "-", 1);
+		// if (spec_info.zero_flag == 1)
+		// 	write(1, "0", 1);
+		// if (spec_info.plus_flag == 1)
+		// 	write(1, "+", 1);
+		// if (spec_info.space_flag == 1)
+		// 	write(1, " ", 1);
+		// if (spec_info.sharp_flag == 1)
+		// 	write(1, "#", 1);
+		// printf("\nwidth : %d\n", spec_info.width);
+		// printf("precision : %d\n", spec_info.precision);
 		write(1, prev, cur - prev);
 		ret += call_dispenser(ap, spec_info.specifier) + (cur - prev);
 		cur += spec_info.len;
