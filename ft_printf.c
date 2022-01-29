@@ -17,6 +17,8 @@ int		is_specifier(char c)
 	if (c == '%' || c == 'c'|| c == 's' || c == 'p' ||	c == 'd'
 		|| c == 'i' || c == 'u' || c == 'x' || c == 'X')
 		return (1);
+	else if (c == 'C' || c == 'D'|| c == 'U')
+		return (1);
 	else
 		return (0);
 }
@@ -170,15 +172,15 @@ int	call_dispenser(va_list* ap, char specifier)
 	int ret;
 	if (specifier == '%')
 		ret = mod_op_handling();
-	else if (specifier == 'd' || specifier == 'i')
+	else if (specifier == 'd' || specifier == 'D' || specifier == 'i')
 		ret = d_handling(ap);
-	else if (specifier == 'c')
+	else if (specifier == 'c' || specifier == 'C')
 		ret = c_handling(ap);
 	else if (specifier == 's')
 		ret = s_handling(ap);
 	else if (specifier == 'p')
 		ret = p_handling(ap);
-	else if (specifier == 'u')
+	else if (specifier == 'u' || specifier == 'U')
 		ret = u_handling(ap);
 	else if (specifier == 'x')
 		ret = lower_x_handling(ap);
@@ -254,19 +256,121 @@ int	str_validation(const char *str)
 // else -> ft_printf에서 -1	Return
 // printf_validation
 
-t_spec spec_parsing(char *spec_ptr)
+// flag : [-], [0], [+], [ ], [#]
+t_spec	check_minus_flag(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == '-' && i == 1)
+		ret.minus_flag = 1;
+	if (mod_op_ptr[i] == '-'
+		&& (mod_op_ptr[i - 1] == '0' || mod_op_ptr[i - 1] == ' '
+			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == '#' ))
+	{
+		if (ret.zero_flag == 1)
+			ret.zero_flag = 0;
+		ret.minus_flag = 1;
+	}
+	return (ret);
+}
+
+t_spec	check_zero_flag(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == '0' && i == 1)
+		ret.zero_flag = 1;
+	if (ret.minus_flag == 0 && mod_op_ptr[i] == '0'
+		&& (mod_op_ptr[i - 1] == ' ' || mod_op_ptr[i - 1] == '+'
+			|| mod_op_ptr[i - 1] == '#' ))
+		ret.zero_flag = 1;
+	return (ret);
+}
+
+t_spec	check_plus_flag(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == '+' && i == 1)
+		ret.plus_flag = 1;
+	if (mod_op_ptr[i] == '+'
+		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == '0'
+			|| mod_op_ptr[i - 1] == ' ' || mod_op_ptr[i - 1] == '#'))
+	{
+		if (ret.space_flag == 1)
+			ret.space_flag = 0;
+		ret.plus_flag = 1;
+	}
+	return (ret);
+}
+
+t_spec	check_space_flag(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == ' ' && i == 1)
+		ret.space_flag = 1;
+	if (ret.plus_flag == 0 && mod_op_ptr[i] == '0'
+		&& (mod_op_ptr[i - 1] == ' ' || mod_op_ptr[i - 1] == '+'
+			|| mod_op_ptr[i - 1] == '#' ))
+		ret.space_flag = 1;
+	return (ret);
+}
+
+t_spec	check_sharp_flag(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == '#' && i == 1)
+		ret.sharp_flag = 1;
+	if (mod_op_ptr[i] == '#'
+		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == '0'
+			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == ' '))
+		ret.sharp_flag = 1;
+	return (ret);
+}
+
+t_spec	check_width(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] != '0' && ft_isdigit(mod_op_ptr[i])
+		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == ' '
+			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == '#'))
+		ret.width = ft_atoi(&mod_op_ptr[i]);
+	return (ret);
+}
+
+t_spec	check_precision(t_spec ret, char *mod_op_ptr, int i)
+{
+	if (mod_op_ptr[i] == '.' && ft_isdigit(mod_op_ptr[i + 1]))
+		ret.precision = ft_atoi(&(mod_op_ptr[i + 1]));
+	return (ret);
+}
+
+t_spec	spec_init(void)
+{
+	t_spec	ret;
+
+	ret.minus_flag = 0;
+	ret.zero_flag = 0;
+	ret.plus_flag = 0;
+	ret.space_flag = 0;
+	ret.sharp_flag = 0;
+	ret.width = 0;
+	ret.precision = -1;
+	ret.len = 0;
+	ret.specifier = 0;
+	return (ret);
+}
+
+t_spec	spec_parsing(char *mod_op_ptr)
 {
 	int		i;
 	t_spec	ret;
 
-	ret.specifier = 0;
-	i = 0;
+	ret = spec_init();
+	i = 1;
+	ret.specifier = mod_op_ptr[i];
 	while (!is_specifier(ret.specifier))
 	{
-		//parsing flag and precision
-		ret.specifier = spec_ptr[i++];
+		ret = check_minus_flag(ret, mod_op_ptr, i);
+		ret = check_zero_flag(ret, mod_op_ptr, i);
+		ret = check_plus_flag(ret, mod_op_ptr, i);
+		ret = check_space_flag(ret, mod_op_ptr, i);
+		ret = check_sharp_flag(ret, mod_op_ptr, i);
+		ret = check_width(ret, mod_op_ptr, i);
+		ret = check_precision(ret, mod_op_ptr, i);
+		ret.specifier = mod_op_ptr[++i];
 	}
-	ret.specifier = spec_ptr[i];
 	ret.len = i + 1;
 	return (ret);
 }
@@ -315,6 +419,18 @@ int	ft_printf(const char *str, ...)
 	while (cur)
 	{
 		spec_info = get_specifier_info(str, i++);
+		if (spec_info.minus_flag == 1)
+			write(1, "-", 1);
+		if (spec_info.zero_flag == 1)
+			write(1, "0", 1);
+		if (spec_info.plus_flag == 1)
+			write(1, "+", 1);
+		if (spec_info.space_flag == 1)
+			write(1, " ", 1);
+		if (spec_info.sharp_flag == 1)
+			write(1, "#", 1);
+		printf("\nwidth : %d\n", spec_info.width);
+		printf("precision : %d\n", spec_info.precision);
 		write(1, prev, cur - prev);
 		ret += call_dispenser(ap, spec_info.specifier) + (cur - prev);
 		cur += spec_info.len;

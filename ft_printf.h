@@ -18,15 +18,19 @@
 #include <unistd.h>
 #include "libft/libft.h"
 
+#include <stdio.h>
+
 typedef struct s_specifier
 {
-	char	flag;
+	int		minus_flag;
+	int		zero_flag;
+	int		plus_flag;
+	int		space_flag;
+	int		sharp_flag;
 	int 	width;
 	int		precision;
 	int		len;
 	char	specifier;
-	char	*start_ptr;
-	char	*end_ptr;
 }					t_spec;
 
 int		ft_putnbr_m_fd(int n, int fd);
