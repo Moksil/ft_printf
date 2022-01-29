@@ -8,9 +8,6 @@ flag : [-], [0], [#], [ ], [+]
 		width가 주어 지고, 해당하는 인자를 출력했을 때의 길이가 width보다 작은 경우에만 동작
 		width가 주어지지 않았거나, 출력된 인자의 길이가 주어진 width보다 크면 warning 없이 [-]flag 무시 됨.
 		-> width가 주어진 경우, fadding용 공백 출력과 인자값 출력의 실행 순서를 변경
-		ex)	("|%-6d|", 123) ->	|100   |	/ ("|%10s|", "123456")  ->	|    123456|	/ ("|%3s|", "12345")  ->	|12345|
-		("|%6d|", 123)  ->	|   100|	/ ("|%-10s|", "123456") ->	|123456    |	/ ("|%-3s|", "12345") ->	|12345|
-		[-] flag를 사용해 좌측정렬(숫자)	/ [-] flag를 사용해 좌측정렬(문자열)			/ 출력된 인자의 크기(5)가 주어진 width(3) 보다 커서 [-]flag 무시됨
 	[0] : width가 주어진 경우, 출력될 인자의 길이가 width 값보다 작은만큼 '0' 출력 후 인자 출력.
 		[-]flag와 함께 사용되면 warning과 함께 [-]flag의 기능만 적용되며 [0]flag의 기능 무시됨.
 		width가 주어 지고, 해당하는 인자를 출력했을 때의 길이가 width보다 작은 경우에만 동작
@@ -33,7 +30,7 @@ flag 와 width, precision의 결합 조건
 	flag인 [0] or [-], [+] or [ ], [#] 간에는 순서 상관 없이 조합 가능해야함.
 	5개의 flag를 모두 동시에 사용하여 컴파일 시, warning으로 실행은 가능하지만, 동시 사용 불가능한 기능은 무시 됨.
 	->	'+' overrides a ' ' if both are used
-			'-' overrides a '0' if both are used) in man printf
+		'-' overrides a '0' if both are used) in man printf
 	함께 사용해서 출력 결과가 바뀔 수 있는 최대 동시 사용 가능 flag의 갯수 ft_printf subject 내에서는 2개.
 	-> subject를 한정하여 생각할 경우 [#]는 %x와 %X에만 적용되고 %x, %X에는 [+] or [ ]가 기능무시 warning이므로,
 	-> %x, %X에는 [#]과 [-] or [0]의 조합만 가능하고 이외 형식지정자의 경우 가능한 flag의 조합은 [-] or [0] 와 [+] or [ ] 의 조합 밖에 없음.
@@ -44,13 +41,13 @@ flag 와 width, precision의 결합 조건
 	flag와 width를 나타내는 숫자와 [.] 및 [.] 이하 precision을 나타내는 숫자를 사용한다면 아래와 같은 순서대로 사용해야함.
 	%(flag)(width number)(.(precision number))(specifier) 이 순서로 적히지 않으면 warning
 
+________________________________________
 
-
-	specifier 별 flag [-], [0], [+] , [ ], [#]와 width, [.] 이하 precision의 적용
+specifier 별 flag [-], [0], [+] , [ ], [#]와 width, [.] 이하 precision의 적용
 
 	해당 인자의 출력 길이 값 : 현재 처리하고있는 specifier에 상응하는 가변인자가 별도 flag 없이 출력 될 경우의 길이
 	ex)	printf("%d", 1000) : 4	/	printf("%s", "abcdefg") : 7
-			printf("%%") : 1		/	printf("%c", 'a') : 1
+	printf("%%") : 1		/	printf("%c", 'a') : 1
 
 	width는 모든 specifier에서 동일하게 적용 됨.
 	-> [-] or [0]에 따라 달라지는 부분은 specifier별 [-] flag, [0] flag의 설명 참조.
@@ -59,8 +56,8 @@ ____________________%c____________________
 
 	[-] : (정상실행) (width 주어지지 않은경우 무시 됨)
 	[0] : (warning)  but 수행은 함, (width 주어지지 않은 경우 무시 됨) -> 0 fadding
-			+ [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
-				-> " '-' overrides a '0' if both are used " in man printf
+		+ [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
+		-> " '-' overrides a '0' if both are used " in man printf
 	[+] : (warning) and [+] flag 무시됨 
 	[ ] : (warning) and [ ] flag 무시됨 
 	[#] : (warning) and [#] flag 무시됨 
@@ -81,10 +78,10 @@ ____________________%s____________________
 	[#] : (warning) and [#] flag 무시됨
 
 	[. + precision] : (정상실행) precision이 해당 인자 출력 길이 값 보다 큰 경우 무시 됨
-					해당 인자 출력 길이 값 보다 작은 경우 동작. 문자열이 앞에서부터 precision number 칸만큼만 출력 됨
-					ex)	문자열 "1234567890"의 해당 인자 출력 길이 값 : 10
-					printf("%.15s", "1234567890") -> 1234567890 (무시된 경우)
-					printf("%.5s", "1234567890") -> 12345 (동작한 경우)
+		해당 인자 출력 길이 값 보다 작은 경우 동작. 문자열이 앞에서부터 precision number 칸만큼만 출력 됨
+		ex)	문자열 "1234567890"의 해당 인자 출력 길이 값 : 10
+		printf("%.15s", "1234567890") -> 1234567890 (무시된 경우)
+		printf("%.5s", "1234567890") -> 12345 (동작한 경우)
 
 	warning 없이 사용 가능한 flag 조합 : %-(width)(. precision)s
 __________________________________________
