@@ -33,8 +33,8 @@ typedef struct s_specifier
 	char	specifier;
 }					t_spec;
 
-int		ft_putnbr_m_fd(int n, int fd);
-int		ft_putnbr_um_fd(unsigned int n, int fd);
+void	ft_putnbr_m_fd(int n, int fd);
+void	ft_putnbr_um_fd(unsigned int n, int fd);
 int		ft_printf(const char *, ...);
 
 #endif

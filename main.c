@@ -44,28 +44,32 @@ int main(void)
 
 	// ft_printf("%S", NULL);
 	// write(1, "\b", 1);
-	printf("|, return : %d\n", ft_printf("|%0+ 000#+.-5d", 123) -1);
+	// printf("|, return : %d\n", printf("|%-10.5d", 1234) -1);
+	// printf("|, return : %d\n", ft_printf("|%-10.5d", 1234) -1);
+	// printf("|, return : %d\n", printf("|%-+15.6d", 1234) -1);
+	// printf("|, return : %d\n", ft_printf("|%-+15.6d", 1234) -1);
+	// printf("|, return : %d\n", printf("|%10.5%") -1);
+	// printf("|, return : %d\n", ft_printf("|%10.5%") -1);
 
 	// printf("| len :%d\n", printf("   printf: %\n"));
 	// printf("| len :%d\n", ft_printf("ft_printf: %\n"));
 
-	// printf("   printf: %40.50d\n", 50);
-	// ft_printf("ft_printf: %40.50d\n", 50);
+	// printf("|, return : %d\n", ft_printf("|%40.50d", 50) - 1);
+	// printf("|, return : %d\n", printf("|%40.50d", 50) - 1);
 	// printf("   printf: %d\n", -589);
 	// ft_printf("ft_printf: %d\n", -589);
-	// printf("   printf: %-4d\n", -2464);
-	// ft_printf("ft_printf: %-4d\n", -2464);
-	// printf("   printf: %.5d\n", -2372);
-	// ft_printf("ft_printf: %.5d\n", -2372);
+	// printf("|, return : %d\n", printf("|%-6d", -2464) -1);
+	// printf("|, return : %d\n", ft_printf("|%-6d", -2464) -1);
+	// printf("   printf: %.6d\n", -2372);
+	// ft_printf("ft_printf: %.6d\n", -2372);
 	// printf("   printf: %p\n", NULL);
 	// ft_printf("ft_printf: %p\n", NULL);
-	// printf("   printf: %015p\n", NULL);
-	// ft_printf("ft_printf: %015p\n", NULL);
-	// printf("   printf: %15p\n", NULL);
-	// ft_printf("ft_printf: %15p\n", NULL);
+	// printf("|, return : %d\n", printf("|%015p", NULL) -1);
+	// printf("|, return : %d\n", ft_printf("|%015p", NULL) -1);
+	// printf("|, return : %d\n", printf("|%15p", NULL) -1);
+	// printf("|, return : %d\n", ft_printf("|%15p", NULL) -1);
 	// printf("   printf: %-15p\n", NULL);
 	// ft_printf("ft_printf: %-15p\n", NULL);
-
 	// printf("   printf: ret = %d\n", printf("%%p::[%010d]\n", -8473));
 	// ft_printf("ft_printf: ret = %d\n", printf("%%p::[%010d]\n", -8473));
 	// printf("   printf: ret = %d\n", printf("%%p::[%10d]\n", -8473));
@@ -180,20 +184,20 @@ int main(void)
 	// printf("   printf: 3caractere 1 %   c caractere 2 % c\n\n", 'a', 'c');
 	// ft_printf("ft_printf: 3caractere 1 %   c caractere 2 % c\n\n", 'a', 'c');
 
-	// printf("   printf: %d\n\n", printf("1hexa-maj 1 %X hexa-maj 2 %X\n\n", 42, -42));
-	// ft_printf("ft_printf:%d\n\n", printf("1hexa-maj 1 %X hexa-maj 2 %X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("3hexa-maj 1 %   X hexa-maj 2 % X\n\n", 42, -42));
-	// ft_printf("ft_printf: %d\n\n", printf("3hexa-maj 1 %   X hexa-maj 2 % X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("4hexa-maj 1 %12X hexa-maj 2 %int12X\n\n", 42, -42));
-	// ft_printf("ft_printf: %d\n\n", printf("4hexa-maj 1 %12X hexa-maj 2 %int12X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("4hexa-maj 1 %-12X hexa-maj 2 %-12X\n\n", 42, -42));
-	// ft_printf("ft_printf: %d\n\n", printf("4hexa-maj 1 %-12X hexa-maj 2 %-12X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("5hexa-maj 1 %0X hexa-maj 2 %0X\n\n", 42, -42));
-	// ft_printf("ft_printf: %d\n\n", printf("5hexa-maj 1 %0X hexa-maj 2 %0X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("6hexa-maj 1 %012X hexa-maj 2 %012X\n\n", 42, -42));
-	// ft_printf("ft_printf: %d\n\n", printf("6hexa-maj 1 %012X hexa-maj 2 %012X\n\n", 42, -42));
-	// printf("   printf: %d\n\n", printf("8hexa-maj 1 %*X hexa-maj 2 %*X\n\n", 42, 6, 6, 6));
-	// ft_printf("ft_printf: %d\n\n", printf("8hexa-maj 1 %*X hexa-maj 2 %*X\n\n", 42, 6, 6, 6));
+	printf("   printf: %d\n\n", printf("1hexa-maj 1 %X hexa-maj 2 %X\n\n", 42, -42));
+	ft_printf("ft_printf:%d\n\n", printf("1hexa-maj 1 %X hexa-maj 2 %X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("3hexa-maj 1 %   X hexa-maj 2 % X\n\n", 42, -42));
+	ft_printf("ft_printf: %d\n\n", printf("3hexa-maj 1 %   X hexa-maj 2 % X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("4hexa-maj 1 %12X hexa-maj 2 %int12X\n\n", 42, -42));
+	ft_printf("ft_printf: %d\n\n", printf("4hexa-maj 1 %12X hexa-maj 2 %int12X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("4hexa-maj 1 %-12X hexa-maj 2 %-12X\n\n", 42, -42));
+	ft_printf("ft_printf: %d\n\n", printf("4hexa-maj 1 %-12X hexa-maj 2 %-12X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("5hexa-maj 1 %0X hexa-maj 2 %0X\n\n", 42, -42));
+	ft_printf("ft_printf: %d\n\n", printf("5hexa-maj 1 %0X hexa-maj 2 %0X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("6hexa-maj 1 %012X hexa-maj 2 %012X\n\n", 42, -42));
+	ft_printf("ft_printf: %d\n\n", printf("6hexa-maj 1 %012X hexa-maj 2 %012X\n\n", 42, -42));
+	printf("   printf: %d\n\n", printf("8hexa-maj 1 %*X hexa-maj 2 %*X\n\n", 42, 6, 6, 6));
+	ft_printf("ft_printf: %d\n\n", printf("8hexa-maj 1 %*X hexa-maj 2 %*X\n\n", 42, 6, 6, 6));
 
 	// printf("   printf: %d\n\n", printf("1pointeur 1 %p pointeur 2 %p\n\n", &c, &c));
 	// ft_printf("ft_printf: %d\n\n", printf("1pointeur 1 %p pointeur 2 %p\n\n", &c, &c));

@@ -31,6 +31,24 @@ int		is_flag(char c)
 		return (0);
 }
 
+int max_of_3(int a, int b, int c)
+{
+	if (a > b)
+	{
+		if (a > c)
+			return (a);
+		else
+			return (c);
+	}
+	else
+	{
+		if (b > c)
+			return (b);
+		else
+			return (c);
+	}
+}
+
 t_spec str_to_struct(char *spec_str)
 {
 	t_spec	ret;
@@ -43,34 +61,83 @@ t_spec str_to_struct(char *spec_str)
 	return (ret);
 }
 
-int	put_hexa_from_int(unsigned int nbr, char flag)
+int	get_nbr_length(int n)
 {
 	int		ret;
-	char	*base;
 
 	ret = 1;
+	if (n == -2147483648)
+		return (11);
+	else if (n < 0)
+		ret += get_nbr_length((-1) * n);
+	else if (n < 10)
+		return (1);
+	else
+		ret += get_nbr_length(n / 10);
+	return (ret);
+}
+
+int	get_unbr_length(unsigned int n)
+{
+	int		ret;
+
+	ret = 1;
+	if (n < 10)
+		return (1);
+	else
+		ret += get_unbr_length(n / 10);
+	return (ret);
+}
+
+int	get_hexa_len_int(unsigned int nbr, char flag)
+{
+	int		ret;
+
+	ret = 1;
+	if (nbr < 0)
+		ret += get_hexa_len_int(0xFFFFFFFF + nbr + 1, flag) - 1;
+	if (nbr < 16)
+		return (1);
+	else
+		ret += get_hexa_len_int(nbr / 16, flag);
+	return(ret);
+}
+
+int	put_hexa_from_int(unsigned int nbr, char flag)
+{
+	char	*base;
+
 	if (flag == 'x')
 		base = "0123456789abcdef";
 	if (flag == 'X')
 		base = "0123456789ABCDEF";
 	if (nbr < 0)
-		ret += put_hexa_from_int(0xFFFFFFFF + nbr + 1, flag) - 1;
+		put_hexa_from_int(0xFFFFFFFF + nbr + 1, flag) - 1;
 	if (nbr < 16)
 		write(1, &base[nbr % 16], 1);
 	else
 	{
-		ret += put_hexa_from_int(nbr / 16, flag);
+		put_hexa_from_int(nbr / 16, flag);
 		write(1, &base[nbr % 16], 1);
 	}
+}
+
+int	get_hexa_len_long(unsigned long nbr)
+{
+	unsigned long	ret;
+
+	ret = 1;
+	if (nbr < 16)
+		return (1);
+	else
+		ret += get_hexa_len_long(nbr / 16);
 	return(ret);
 }
 
-int	put_hexa_from_long(unsigned long nbr, char flag)
+void	put_hexa_from_long(unsigned long nbr, char flag)
 {
-	unsigned long	ret;
-	char			*base;
+	char	*base;
 
-	ret = 1;
 	if (flag == 'x')
 		base = "0123456789abcdef";
 	if (flag == 'X')
@@ -79,40 +146,148 @@ int	put_hexa_from_long(unsigned long nbr, char flag)
 		write(1, &base[nbr % 16], 1);
 	else
 	{
-		ret += put_hexa_from_long(nbr / 16, flag);
+		put_hexa_from_long(nbr / 16, flag);
 		write(1, &base[nbr % 16], 1);
 	}
-	return(ret);
 }
 
-int	mod_op_handling()
+void width_handling(t_spec spec_info, int arglength)
 {
-	char mod_op = '%';
-	write(1, &mod_op, 1);
-	return (1);
+	int	i;
+	int flag;
+	
+	flag = spec_info.plus_flag + spec_info.space_flag;
+	i = 0;
+	if(spec_info.width > spec_info.precision)
+	{
+		if (spec_info.precision > arglength)
+		{
+			while (i++ < spec_info.width - spec_info.precision - flag)
+			{
+				if (spec_info.zero_flag == 1)
+					write(1, "0", 1);
+				else
+					write(1, " ", 1);
+			}
+		}
+		while (i++ < spec_info.width - arglength)
+		{
+			if (spec_info.zero_flag == 1)
+				write(1, "0", 1);
+			else
+				write(1, " ", 1);
+		}
+	}
 }
 
-int	d_handling(va_list* ap)
+void put_precision_char(char specifier)
 {
-	int		d_val;
-	int		str_size;
+	if (specifier == '%')
+		write(1, " ", 1);
+	else
+		write(1, "0", 1);
+}
+
+void precision_handling(t_spec spec_info, int arglength)
+{
+	int	i;
+
+	i = 0;
+	if (spec_info.plus_flag)
+		write(1, "+", 1);
+	else if(spec_info.space_flag)
+		write(1, " ", 1);	
+	if (spec_info.precision > arglength)
+	{
+		if(spec_info.width > spec_info.precision)
+			while (i++ < spec_info.width - arglength)
+				put_precision_char(spec_info.specifier);
+		else
+			while (i++ < spec_info.precision - arglength)
+				put_precision_char(spec_info.specifier);
+	}
+}
+
+int	mod_op_handling(t_spec spec_info)
+{
+	char	mod_op = '%';
+	int		i;
+	int		arglength;
+	
+	i = 0; 
+	arglength = 1;
+	if (spec_info.minus_flag == 1)
+		write(1, &mod_op, arglength);
+	precision_handling(spec_info, arglength);
+	width_handling(spec_info, arglength);
+	if (spec_info.minus_flag == 0)
+		write(1, &mod_op, arglength);
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
+}
+
+void d_print(t_spec spec_info, int sign, int d_val)
+{
+	int	arglength;
+	
+	arglength = get_nbr_length(sign * d_val);
+	if (spec_info.minus_flag == 1)
+	{
+		if (sign == -1)
+			write(1, "-", 1);
+		precision_handling(spec_info, arglength);
+		ft_putnbr_m_fd(sign * d_val, 1);
+	}
+	if (sign == 1)
+		width_handling(spec_info, arglength);
+	else
+		width_handling(spec_info, arglength + 1);
+	if (spec_info.minus_flag == 0)
+	{
+		if (sign == -1)
+			write(1, "-", 1);
+		precision_handling(spec_info, arglength);
+		ft_putnbr_m_fd(sign * d_val, 1);
+	}
+}
+
+int	d_handling(va_list* ap, t_spec spec_info)
+{
+	int sign;
+	int	d_val;
+	int	arglength;
 
 	d_val = va_arg(*ap, int);
-	str_size = ft_putnbr_m_fd(d_val, 1);
-	return (str_size);
+	if (d_val > 0)
+		sign = 1;
+	else
+		sign = -1;
+	arglength = get_nbr_length(d_val);
+	d_print(spec_info, sign, d_val);
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
 }
 
-int	u_handling(va_list* ap)
+int	u_handling(va_list* ap, t_spec spec_info)
 {
 	unsigned int	d_val;
-	int				str_size;
+	int				arglength;
 
 	d_val = va_arg(*ap, int);
-	str_size = ft_putnbr_um_fd(d_val, 1);
-	return (str_size);
+	arglength = get_unbr_length(d_val);
+	if (spec_info.minus_flag == 1)
+	{
+		precision_handling(spec_info, arglength);
+		ft_putnbr_um_fd(d_val, 1);
+	}
+	width_handling(spec_info, arglength);
+	if (spec_info.minus_flag == 0)
+	{
+		precision_handling(spec_info, arglength);
+		ft_putnbr_um_fd(d_val, 1);
+	}
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
 }
 
-int	c_handling(va_list* ap)
+int	c_handling(va_list* ap, t_spec spec_info)
 {
 	char	ch_val;
 	ch_val = va_arg(*ap, int);
@@ -120,7 +295,7 @@ int	c_handling(va_list* ap)
 	return (1);
 }
 
-int	s_handling(va_list* ap)
+int	s_handling(va_list* ap, t_spec spec_info)
 {
 	char	*s_ptr;
 	int		str_size;
@@ -136,56 +311,106 @@ int	s_handling(va_list* ap)
 	return (str_size);
 }
 
-int	lower_x_handling(va_list* ap)
+int	lower_x_handling(va_list* ap, t_spec spec_info)
 {
 	int		int_val;
-	int		str_size;
+	int		arglength;
 
 	int_val = va_arg(*ap, int);
-	str_size = put_hexa_from_int(int_val, 'x');
-	return (str_size);
+	arglength = get_hexa_len_long(int_val);
+	if (spec_info.zero_flag == 1 && spec_info.sharp_flag == 2)
+		write(1, "0x", 2);
+	if (spec_info.minus_flag == 1)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0 && spec_info.sharp_flag == 2)
+			write(1, "0x", 2);
+		put_hexa_from_int(int_val, 'x');
+	}
+	width_handling(spec_info, arglength + spec_info.sharp_flag);
+	if (spec_info.minus_flag == 0)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0 && spec_info.sharp_flag == 2)
+			write(1, "0x", 2);
+		put_hexa_from_int(int_val, 'x');
+	}
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
 }
 
-int	upper_x_handling(va_list* ap)
+int	upper_x_handling(va_list* ap, t_spec spec_info)
 {
 	int		int_val;
-	int		str_size;
+	int		arglength;
 
 	int_val = va_arg(*ap, int);
-	str_size = put_hexa_from_int(int_val, 'X');
-	return (str_size);
+	arglength = get_hexa_len_long(int_val);
+	if (spec_info.zero_flag == 1 && spec_info.sharp_flag == 2)
+		write(1, "0X", 2);
+	if (spec_info.minus_flag == 1)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0 && spec_info.sharp_flag == 2)
+			write(1, "0X", 2);
+		put_hexa_from_int(int_val, 'X');
+	}
+	width_handling(spec_info, arglength + spec_info.sharp_flag);
+	if (spec_info.minus_flag == 0)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0 && spec_info.sharp_flag == 2)
+			write(1, "0X", 2);
+		put_hexa_from_int(int_val, 'X');
+	}
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
 }
 
-int	p_handling(va_list* ap)
+int	p_handling(va_list* ap, t_spec spec_info)
 {
 	void	*p_ptr;
-	int		str_size;
+	int		arglength;
 
 	p_ptr = va_arg(*ap, void *);
-	write(1, "0x", 2);
-	str_size = put_hexa_from_long((long)p_ptr, 'x');
-	return (str_size + 2);
+	arglength = get_hexa_len_long((long)p_ptr);
+	if (spec_info.zero_flag == 1)
+		write(1, "0x", 2);
+	if (spec_info.minus_flag == 1)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0)
+			write(1, "0x", 2);
+		put_hexa_from_long((long)p_ptr, 'x');
+	}
+	width_handling(spec_info, arglength + 2);
+	if (spec_info.minus_flag == 0)
+	{
+		precision_handling(spec_info, arglength);
+		if (spec_info.zero_flag == 0)
+			write(1, "0x", 2);
+		put_hexa_from_long((long)p_ptr, 'x');
+	}
+	return (max_of_3(spec_info.width, spec_info.precision, arglength));
 }
 
-int	call_dispenser(va_list* ap, char specifier)
+int	call_dispenser(va_list* ap, t_spec s)
 {
 	int ret;
-	if (specifier == '%')
-		ret = mod_op_handling();
-	else if (specifier == 'd' || specifier == 'D' || specifier == 'i')
-		ret = d_handling(ap);
-	else if (specifier == 'c' || specifier == 'C')
-		ret = c_handling(ap);
-	else if (specifier == 's')
-		ret = s_handling(ap);
-	else if (specifier == 'p')
-		ret = p_handling(ap);
-	else if (specifier == 'u' || specifier == 'U')
-		ret = u_handling(ap);
-	else if (specifier == 'x')
-		ret = lower_x_handling(ap);
-	else if (specifier == 'X')
-		ret = upper_x_handling(ap);
+	if (s.specifier == '%')
+		ret = mod_op_handling(s);
+	else if (s.specifier == 'd' || s.specifier == 'D' || s.specifier == 'i')
+		ret = d_handling(ap, s);
+	else if (s.specifier == 'c' || s.specifier == 'C')
+		ret = c_handling(ap, s);
+	else if (s.specifier == 's')
+		ret = s_handling(ap, s);
+	else if (s.specifier == 'p')
+		ret = p_handling(ap, s);
+	else if (s.specifier == 'u' || s.specifier == 'U')
+		ret = u_handling(ap, s);
+	else if (s.specifier == 'x')
+		ret = lower_x_handling(ap, s);
+	else if (s.specifier == 'X')
+		ret = upper_x_handling(ap, s);
 	else
 		ret = 0;
 	return (ret);
@@ -312,11 +537,11 @@ t_spec	check_space_flag(t_spec ret, char *mod_op_ptr, int i)
 t_spec	check_sharp_flag(t_spec ret, char *mod_op_ptr, int i)
 {
 	if (i == 1 && mod_op_ptr[i] == '#')
-		ret.sharp_flag = 1;
+		ret.sharp_flag = 2;
 	if (mod_op_ptr[i] == '#'
 		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == '0'
 			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == ' '))
-		ret.sharp_flag = 1;
+		ret.sharp_flag = 2;
 	return (ret);
 }
 
@@ -324,7 +549,8 @@ t_spec	check_width(t_spec ret, char *mod_op_ptr, int i)
 {
 	if (mod_op_ptr[i] != '0' && ft_isdigit(mod_op_ptr[i])
 		&& (mod_op_ptr[i - 1] == '-' || mod_op_ptr[i - 1] == ' '
-			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == '#'))
+			|| mod_op_ptr[i - 1] == '+' || mod_op_ptr[i - 1] == '#'
+			|| mod_op_ptr[i - 1] == '%' || mod_op_ptr[i - 1] == '0'))
 		ret.width = ft_atoi(&mod_op_ptr[i]);
 	return (ret);
 }
@@ -351,7 +577,7 @@ t_spec	spec_init(void)
 	ret.space_flag = 0;
 	ret.sharp_flag = 0;
 	ret.width = 0;
-	ret.precision = -1;
+	ret.precision = 0;
 	ret.len = 0;
 	ret.specifier = 0;
 	return (ret);
@@ -424,6 +650,7 @@ int	ft_printf(const char *str, ...)
 	while (cur)
 	{
 		spec_info = get_specifier_info(str, i++);
+		// write(1, "flag : ", 7);
 		// if (spec_info.minus_flag == 1)
 		// 	write(1, "-", 1);
 		// if (spec_info.zero_flag == 1)
@@ -432,12 +659,12 @@ int	ft_printf(const char *str, ...)
 		// 	write(1, "+", 1);
 		// if (spec_info.space_flag == 1)
 		// 	write(1, " ", 1);
-		// if (spec_info.sharp_flag == 1)
+		// if (spec_info.sharp_flag == 2)
 		// 	write(1, "#", 1);
-		// printf("\nwidth : %d\n", spec_info.width);
+		// printf(", width : %d, ", spec_info.width);
 		// printf("precision : %d\n", spec_info.precision);
 		write(1, prev, cur - prev);
-		ret += call_dispenser(ap, spec_info.specifier) + (cur - prev);
+		ret += call_dispenser(ap, spec_info) + (cur - prev);
 		cur += spec_info.len;
 		prev = cur;
 		cur = ft_strchr(cur, '%');
