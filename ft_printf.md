@@ -45,7 +45,7 @@ ________________________________________
 
 specifier 별 flag [-], [0], [+] , [ ], [#]와 width, [.] 이하 precision의 적용
 
-	arglength : 현재 처리하고있는 specifier에 상응하는 가변인자가 별도 flag 없이 출력 될 경우의 길이
+	arglen : 현재 처리하고있는 specifier에 상응하는 가변인자가 별도 flag 없이 출력 될 경우의 길이
 	ex)	printf("%d", 1000) : 4	/	printf("%s", "abcdefg") : 7
 	printf("%%") : 1		/	printf("%c", 'a') : 1
 
@@ -56,7 +56,7 @@ ____________________%c____________________
 	* %C로도 사용 가능함.
 
 	[-] : (정상실행) (width가 주어지지 않은경우 무시 됨)
-		(arglength(%c의 경우 항상 1)와 같거나 작은 width 주어진 경우 무시 됨)
+		(arglen(%c의 경우 항상 1)와 같거나 작은 width 주어진 경우 무시 됨)
 	[0] : (warning) but 수행은 함, (width 주어지지 않은 경우 무시 됨) -> 0 fadding
 		with [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
@@ -72,7 +72,7 @@ __________________________________________
 ____________________%s____________________
 
 	[-] : (정상실행) (width 주어지지 않은 경우 무시 됨)
-		(arglength과 같거나 작은 width 주어진 경우 무시 됨)
+		(arglen과 같거나 작은 width 주어진 경우 무시 됨)
 	[0] : (warning) but 수행은 함, (width 주어지지 않은 경우 무시 됨) -> 0 fadding
 		with [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
@@ -80,12 +80,12 @@ ____________________%s____________________
 	[ ] : (warning) and [ ] flag 무시됨
 	[#] : (warning) and [#] flag 무시됨
 
-	(. precision) : (정상실행) precision이 arglength 보다 큰 경우 무시 됨
-		arglength 작은 경우 동작. 문자열이 앞에서부터 precision number 칸만큼만 출력 됨
+	(. precision) : (정상실행) precision이 arglen 보다 큰 경우 무시 됨
+		arglen 작은 경우 동작. 문자열이 앞에서부터 precision number 칸만큼만 출력 됨
 		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		* width - precision 만큼의 ' ' or '0'
 		!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		ex)	문자열 "1234567890"의 arglength : 10
+		ex)	문자열 "1234567890"의 arglen : 10
 		printf("%.15s", "1234567890") -> 1234567890 (무시된 경우)
 		printf("%.5s", "1234567890") -> 12345 (동작한 경우)
 
@@ -95,7 +95,7 @@ __________________________________________
 ____________________%p____________________
 
 	[-] : (정상실행) (width가 주어지지 않은 경우 무시 됨)
-		('0x', precision의 영향으로 변화된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨)
+		('0x', precision의 영향으로 변화된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨)
 	[0] : (warning) but 수행은 함, (width 주어지지 않은 경우 무시 됨) -> 0 fadding
 		with [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
@@ -104,9 +104,9 @@ ____________________%p____________________
 	[#] : (warning) and [#] flag 무시됨 
 
 	(. precision) : (warning) but 수행은 함.
-		0x를 제외한 arglength과 같거나 작은 precision이 주어진 경우 무시 됨.
-		0x를 제외한 (arglength + fadding 0의 갯수)가 precision number가 될때까지 0x와 인자 값 사이에 0을 fadding.
-		with (width) (with out [-]) : (0x, precision의 영향으로 추가된 길이 + arglength보다 작은 width는 무시 됨)
+		0x를 제외한 arglen과 같거나 작은 precision이 주어진 경우 무시 됨.
+		0x를 제외한 (arglen + fadding 0의 갯수)가 precision number가 될때까지 0x와 인자 값 사이에 0을 fadding.
+		with (width) (with out [-]) : (0x, precision의 영향으로 추가된 길이 + arglen보다 작은 width는 무시 됨)
 		with [0] : 
 
 	warning 없이 사용 가능한 flag 조합 : %-(width)p
@@ -116,21 +116,21 @@ __________________%d, %i__________________
 	*%D로도 사용 가능함.
 
 	[-] : (정상실행) (width가 주어지지 않은 경우 무시 됨)
-		([+ or -] flag, precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨) 
+		([+ or -] flag, precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨) 
 	[0] : (정상실행) (width가 주어지지 않은 경우 무시 됨)
-		(flag, precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨)
+		(flag, precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨)
 		+ [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
 	[+] : (정상실행) (해당 인자가 음수일 경우 무시 됨)
-		width가 주어지지 않았거나, arglength와 같거나 작은 경우 해당 하는 인자 출력 전 [+] 출력 후 해당 인자 출력
-		arglength을 초과하는 숫자가 width로 주어진 경우 width의 fadding [0] or [ ] 한 칸 대신 [+] 출력
+		width가 주어지지 않았거나, arglen와 같거나 작은 경우 해당 하는 인자 출력 전 [+] 출력 후 해당 인자 출력
+		arglen을 초과하는 숫자가 width로 주어진 경우 width의 fadding [0] or [ ] 한 칸 대신 [+] 출력
 	[ ] : (정상실행) (해당 인자가 음수일 경우 무시 됨)
-		width가 주어지지 않았거나, arglength와 같거나 작은 경우 해당 하는 인자 출력 전 [ ] 출력 후 해당 인자 출력
-		arglength을 초과하는 숫자가 width로 주어진 경우 width의 fadding [0] or [ ] 한 칸 대신 [ ] 출력
+		width가 주어지지 않았거나, arglen와 같거나 작은 경우 해당 하는 인자 출력 전 [ ] 출력 후 해당 인자 출력
+		arglen을 초과하는 숫자가 width로 주어진 경우 width의 fadding [0] or [ ] 한 칸 대신 [ ] 출력
 	[#] : (warning) and [#] flag 무시됨
 
-	(. precision) :(정상실행) arglength과 같거나 작은 precision이 주어진 경우 무시 됨.
-		(arglength + fadding 0의 갯수)가 precision number가 될 때까지 인자 값 앞에 0을 fadding함.
+	(. precision) :(정상실행) arglen과 같거나 작은 precision이 주어진 경우 무시 됨.
+		(arglen + fadding 0의 갯수)가 precision number가 될 때까지 인자 값 앞에 0을 fadding함.
 		with (width) (with out [-]) : (flag, precision의 영향으로 변화된 최종적인 인자의 출력 길이보다 작은 width는 무시 됨)
 
 	warning 없이 사용 가능한 flag 조합 : %[- or 0][+ or  ](width)(. precision)d (or i)
@@ -139,18 +139,18 @@ __________________________________________
 ____________________%u____________________
 
 	[-] : (정상실행) (width 주어지지 않은 경우 무시 됨)
-		(precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨) 
+		(precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨) 
 	[0] : (정상실행) (width 주어지지 않은 경우 무시 됨)
-		(precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨) 
+		(precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨) 
 		+ [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
 	[+] : (warning) and [+] flag 무시됨 
 	[ ] : (warning) and [ ] flag 무시됨 
 	[#] : (warning) and [#] flag 무시됨 
 
-	(. precision) : arglength과 같거나 작은 precision이 주어진 경우 무시 됨.
-		(arglength + fadding 0의 갯수)가 precision number가 될 때까지 인자 값 앞에 0을 fadding함.
-		with (width) (with out [-]) : (precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width는 무시 됨)
+	(. precision) : arglen과 같거나 작은 precision이 주어진 경우 무시 됨.
+		(arglen + fadding 0의 갯수)가 precision number가 될 때까지 인자 값 앞에 0을 fadding함.
+		with (width) (with out [-]) : (precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width는 무시 됨)
 
 	warning 없이 사용 가능한 flag 조합 : %[- or 0](width)(. precision)u
 __________________________________________
@@ -158,7 +158,7 @@ __________________________________________
 __________________%x, %X__________________
 
 	[-] : (정상실행) (width가 주어지지 않은 경우 무시 됨)
-		([#]flag의 0x, precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width 주어진 경우 무시 됨)
+		([#]flag의 0x, precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width 주어진 경우 무시 됨)
 	[0] : (warning) but 수행은 함, (width 주어지지 않은 경우 무시 됨) -> 0 fadding
 		with [-] : (warning) 동시 사용 불가 동시 사용시 warning 출력 후 [-]만 인식 됨
 		-> " '-' overrides a '0' if both are used " in man printf
@@ -166,9 +166,9 @@ __________________%x, %X__________________
 	[ ] : (warning) and [ ] flag 무시됨 
 	[#] : (정상실행) 숫자 출력 이전에 진법표기 구분자 "0x" or "0X" 출력
 
-	(. precision) : (정상실행) arglength과 같거나 작은 precision이 주어진 경우 무시 됨.
-		[#]flag의 0x를 제외한 (arglength + fadding 0의 갯수)가 precision number가 될때까지 0x와 인자 값 사이에 0을 fadding.
-		with (width) (with out [-]) : (0x, precision의 영향으로 추가된 길이 + arglength와 같거나 작은 width는 무시 됨)
+	(. precision) : (정상실행) arglen과 같거나 작은 precision이 주어진 경우 무시 됨.
+		[#]flag의 0x를 제외한 (arglen + fadding 0의 갯수)가 precision number가 될때까지 0x와 인자 값 사이에 0을 fadding.
+		with (width) (with out [-]) : (0x, precision의 영향으로 추가된 길이 + arglen와 같거나 작은 width는 무시 됨)
 
 	warning 없이 사용 가능한 flag 조합 : %-(width)p
 __________________________________________
@@ -204,7 +204,7 @@ flag, width, precision 파싱 방법
 	- [.]다음칸이 숫자가 아닌 경우 : precision = 0으로 초기화
 	[.]이 없는 경우 : 
 	- precision = 인자의 출력 길이 값.
-	* string의 경우 arglength보다 작은 경우에만 동작, 숫자 값의 경우 인자의 출력 길이 값보다 큰 경우에만 동작.
+	* string의 경우 arglen보다 작은 경우에만 동작, 숫자 값의 경우 인자의 출력 길이 값보다 큰 경우에만 동작.
 
 
 printf(" -> return : %d\n", printf("%.3s", (char *)0));

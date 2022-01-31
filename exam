@@ -14,15 +14,15 @@ int main(void)
 	int 	a;
 	void * ptr  = &a;
 
-// width, precision, arglength
-// s제외하면 precision > arglength인 경우에만 동작.
-// width > arglength
+// width, precision, arglen
+// s제외하면 precision > arglen인 경우에만 동작.
+// width > arglen
 
 // 
 // width > precision > arglenth
 
 
-// if (precision > arglength)
+// if (precision > arglen)
 // {
 // 	if(width > precision)
 // 	{
@@ -37,13 +37,13 @@ int main(void)
 
 // d - [width > precision > arglenth]
 // -> ' ' width - precision칸 출력,
-// -> '0' precision - arglength칸 출력
-// -> 인자 출력 (arglength칸 차지 함.)
+// -> '0' precision - arglen칸 출력
+// -> 인자 출력 (arglen칸 차지 함.)
 // => return == width
 
 // d - [precision > arglenth]
-// -> '0' precision - arglength칸 출력
-// -> 인자 출력 (arglength칸 차지 함.)
+// -> '0' precision - arglen칸 출력
+// -> 인자 출력 (arglen칸 차지 함.)
 // => return == precision
 
 	// printf(", return : %d\n", printf("|%05s|", "1234567890"));
