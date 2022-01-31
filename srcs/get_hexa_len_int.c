@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/ft_printf.h"
+
 int	get_hexa_len_int(unsigned int nbr)
 {
 	int		ret;

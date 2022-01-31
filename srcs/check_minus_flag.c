@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../include/ft_printf.h"
 
 t_spec	check_minus_flag(t_spec ret, char *mod_op_ptr, int i)
 {

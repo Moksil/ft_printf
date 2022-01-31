@@ -15,7 +15,7 @@
 
 # include <stdarg.h>
 # include <unistd.h>
-# include "../libft/libft.h"
+# include "libft.h"
 
 typedef struct s_specifier
 {
@@ -65,5 +65,6 @@ int			lower_x_handling(va_list *ap, t_spec s);
 int			upper_x_handling(va_list *ap, t_spec s);
 void		fadding_space(t_spec s, int arglen, int sign);
 void		fadding_zero(t_spec s, int arglen, int sign);
+int			ft_printf(const char *str, ...);
 
 #endif
