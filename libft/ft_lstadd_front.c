@@ -18,5 +18,5 @@ void	ft_lstadd_front(t_list **lst, t_list *new_node)
 
 	tmp = *lst;
 	*lst = new_node;
-	ft_lstlast(new_node) -> next = tmp;
+	ft_lstlast(new_node)->next = tmp;
 }
