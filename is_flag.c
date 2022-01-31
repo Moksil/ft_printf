@@ -13,8 +13,8 @@
 #include "ft_printf.h"
 
 int	is_flag(char c)
-{ 
-	if (c == '-' || c == '.'|| c == '#' || c == ' ' || c == '+')
+{
+	if (c == '-' || c == '.' || c == '#' || c == ' ' || c == '+')
 		return (1);
 	else
 		return (0);

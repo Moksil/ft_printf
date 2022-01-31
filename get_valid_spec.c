@@ -16,7 +16,7 @@ const char	*get_valid_spec(const char *mod_op_ptr)
 {
 	int			i;
 	const char	*spec_ptr;
-	
+
 	i = 0;
 	spec_ptr = mod_op_ptr;
 	while (mod_op_ptr && *(++spec_ptr))

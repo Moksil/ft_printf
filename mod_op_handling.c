@@ -14,9 +14,10 @@
 
 int	mod_op_handling(t_spec s)
 {
-	char	mod_op = '%';
+	char	mod_op;
 	int		arglen;
-	
+
+	mod_op = '%';
 	s.precision = -1;
 	arglen = 1;
 	if (s.minus_flag == 0)

@@ -21,5 +21,5 @@ int	get_hexa_len_long(unsigned long nbr)
 		return (1);
 	else
 		ret += get_hexa_len_long(nbr / 16);
-	return(ret);
+	return (ret);
 }

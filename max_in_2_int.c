@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int max_in_2_int(int a, int b)
+int	max_in_2_int(int a, int b)
 {
 	if (a > b)
 		return (a);

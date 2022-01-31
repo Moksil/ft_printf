@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int max_in_3_int(int a, int b, int c)
+int	max_in_3_int(int a, int b, int c)
 {
 	if (a > b)
 	{

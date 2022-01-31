@@ -22,7 +22,7 @@ t_spec	check_width(t_spec ret, char *mod_op_ptr, int i)
 			|| mod_op_ptr[i - 1] == '%' || mod_op_ptr[i - 1] == '0'))
 	{
 		ptr = &mod_op_ptr[i];
-		while(ft_isdigit(*ptr))
+		while (ft_isdigit(*ptr))
 			ptr--;
 		if (*ptr == '.')
 			return (ret);

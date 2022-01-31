@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int	c_handling(va_list* ap, t_spec s)
+int	c_handling(va_list *ap, t_spec s)
 {
 	char	ch_val;
 	int		arglen;

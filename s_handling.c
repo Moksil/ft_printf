@@ -12,11 +12,11 @@
 
 #include "ft_printf.h"
 
-int	s_handling(va_list* ap, t_spec s)
+int	s_handling(va_list *ap, t_spec s)
 {
 	char	*s_ptr;
 	int		arglen;
-	
+
 	s_ptr = va_arg(*ap, char *);
 	if (s_ptr == NULL)
 		s_ptr = "(null)";

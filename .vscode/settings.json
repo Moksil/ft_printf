@@ -1,7 +1,0 @@
-{
-	"files.associations": {
-		"atomic": "c",
-		"bitset": "c",
-		"ft_printf.h": "c"
-	}
-}

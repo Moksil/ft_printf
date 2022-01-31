@@ -13,10 +13,9 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "libft/libft.h"
+# include <stdarg.h>
+# include <unistd.h>
+# include "libft/libft.h"
 
 typedef struct s_specifier
 {
@@ -25,7 +24,7 @@ typedef struct s_specifier
 	int		plus_flag;
 	int		space_flag;
 	int		sharp_flag;
-	int 	width;
+	int		width;
 	int		precision;
 	int		len;
 	char	specifier;
@@ -45,7 +44,7 @@ void		put_nbr(int n);
 void		put_nbr_u(unsigned int n);
 void		put_hexa_from_long(unsigned long nbr, char flag);
 void		put_hexa_from_int(unsigned int nbr, char flag);
-t_spec		get_specifier_info(const char *str, int n) ;
+t_spec		get_specifier_info(const char *str, int n);
 t_spec		spec_init(void);
 t_spec		spec_parsing(char *mod_op_ptr);
 t_spec		check_minus_flag(t_spec ret, char *mod_op_ptr, int i);
@@ -55,18 +54,16 @@ t_spec		check_space_flag(t_spec ret, char *mod_op_ptr, int i);
 t_spec		check_sharp_flag(t_spec ret, char *mod_op_ptr, int i);
 t_spec		check_width(t_spec ret, char *mod_op_ptr, int i);
 t_spec		check_precision(t_spec ret, char *mod_op_ptr, int i);
-int			call_dispenser(va_list* ap, t_spec s);
+int			call_dispenser(va_list *ap, t_spec s);
 int			mod_op_handling(t_spec s);
-int			c_handling(va_list* ap, t_spec s);
-int			s_handling(va_list* ap, t_spec s);
-int			d_handling(va_list* ap, t_spec s);
-int			u_handling(va_list* ap, t_spec s);
-int			p_handling(va_list* ap, t_spec s);
-int			lower_x_handling(va_list* ap, t_spec s);
-int			upper_x_handling(va_list* ap, t_spec s);
+int			c_handling(va_list *ap, t_spec s);
+int			s_handling(va_list *ap, t_spec s);
+int			d_handling(va_list *ap, t_spec s);
+int			u_handling(va_list *ap, t_spec s);
+int			p_handling(va_list *ap, t_spec s);
+int			lower_x_handling(va_list *ap, t_spec s);
+int			upper_x_handling(va_list *ap, t_spec s);
 void		fadding_space(t_spec s, int arglen, int sign);
 void		fadding_zero(t_spec s, int arglen, int sign);
-
-int		ft_printf(const char *, ...);
 
 #endif

@@ -14,10 +14,10 @@
 
 int	is_specifier(char c)
 {
-	if (c == '%' || c == 'c'|| c == 's' || c == 'p' ||	c == 'd'
+	if (c == '%' || c == 'c' || c == 's' || c == 'p' || c == 'd'
 		|| c == 'i' || c == 'u' || c == 'x' || c == 'X')
 		return (1);
-	else if (c == 'C' || c == 'D'|| c == 'U')
+	else if (c == 'C' || c == 'D' || c == 'U')
 		return (1);
 	else
 		return (0);

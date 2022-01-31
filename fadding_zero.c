@@ -12,9 +12,9 @@
 
 #include "ft_printf.h"
 
-void fadding_zero(t_spec s, int arglen, int sign)
+void	fadding_zero(t_spec s, int arglen, int sign)
 {
-	int i;
+	int	i;
 	int	sign_space;
 
 	sign_space = 0;
@@ -28,7 +28,7 @@ void fadding_zero(t_spec s, int arglen, int sign)
 		write(1, " ", 1);
 	i = 0;
 	if (s.zero_flag)
-		while(i++ < s.width - max_in_2_int(s.precision, arglen) - sign_space)
+		while (i++ < s.width - max_in_2_int(s.precision, arglen) - sign_space)
 			write(1, "0", 1);
 	i = 0;
 	if (s.precision > arglen)

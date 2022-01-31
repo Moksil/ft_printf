@@ -12,9 +12,10 @@
 
 #include "ft_printf.h"
 
-int	call_dispenser(va_list* ap, t_spec s)
+int	call_dispenser(va_list *ap, t_spec s)
 {
-	int ret;
+	int	ret;
+
 	if (s.specifier == '%')
 		ret = mod_op_handling(s);
 	else if (s.specifier == 'd' || s.specifier == 'D' || s.specifier == 'i')

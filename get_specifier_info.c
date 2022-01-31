@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-t_spec	get_specifier_info(const char *str, int n) 
+t_spec	get_specifier_info(const char *str, int n)
 {
 	int		i;
 	char	*ptr;

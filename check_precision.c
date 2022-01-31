@@ -14,7 +14,7 @@
 
 t_spec	check_precision(t_spec ret, char *mod_op_ptr, int i)
 {
-	char specifier;
+	char	specifier;
 
 	specifier = *(get_valid_spec(mod_op_ptr));
 	if (mod_op_ptr[i] == '.' && mod_op_ptr[i + 1] != '\0')
