@@ -3,20 +3,45 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 NAME = libftprintf.a
 
-SOURCE = 	ft_printf.c \
-			is_specifier.c is_flag.c max_in_2_int.c max_in_3_int.c \
-			str_validation.c get_valid_spec.c \
-			get_nbr_length.c get_unbr_length.c get_hexa_len_int.c get_hexa_len_long.c \
-			put_nbr.c put_nbr_u.c put_hexa_from_long.c put_hexa_from_int.c \
-			get_specifier_info.c spec_init.c spec_parsing.c \
-			check_minus_flag.c check_zero_flag.c check_plus_flag.c \
-			check_space_flag.c check_sharp_flag.c check_width.c check_precision.c \
-			call_dispenser.c mod_op_handling.c c_handling.c s_handling.c \
-			d_handling.c u_handling.c p_handling.c lower_x_handling.c upper_x_handling.c \
-			fadding_space.c fadding_zero.c
+SOURCE = 	srcs/ft_printf.c \
+			srcs/is_specifier.c \
+			srcs/is_flag.c \
+			srcs/max_in_2_int.c \
+			srcs/max_in_3_int.c \
+			srcs/str_validation.c \
+			srcs/get_valid_spec.c \
+			srcs/get_nbr_length.c \
+			srcs/get_unbr_length.c \
+			srcs/get_hexa_len_int.c \
+			srcs/get_hexa_len_long.c \
+			srcs/put_nbr.c \
+			srcs/put_nbr_u.c \
+			srcs/put_hexa_from_long.c \
+			srcs/put_hexa_from_int.c \
+			srcs/get_specifier_info.c \
+			srcs/spec_init.c \
+			srcs/spec_parsing.c \
+			srcs/check_minus_flag.c \
+			srcs/check_zero_flag.c \
+			srcs/check_plus_flag.c \
+			srcs/check_space_flag.c \
+			srcs/check_sharp_flag.c \
+			srcs/check_width.c \
+			srcs/check_precision.c \
+			srcs/call_dispenser.c \
+			srcs/mod_op_handling.c \
+			srcs/c_handling.c \
+			srcs/s_handling.c \
+			srcs/d_handling.c \
+			srcs/u_handling.c \
+			srcs/p_handling.c \
+			srcs/lower_x_handling.c \
+			srcs/upper_x_handling.c \
+			srcs/fadding_space.c \
+			srcs/fadding_zero.c
 
 LIBDIR = libft
-HEADERS = includes
+HEADERS = include
 OBJECTS = $(SOURCE:.c=.o)
 
 %o: %c
@@ -39,5 +64,7 @@ fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+bonus: $(NAME)
 
 .PHONY: all clean fclean re bonus
