@@ -22,13 +22,13 @@ t_spec	check_precision(t_spec ret, char *mod_op_ptr, int i)
 		if (ft_isdigit(mod_op_ptr[i + 1]))
 		{
 			ret.precision = ft_atoi(&(mod_op_ptr[i + 1]));
-			if (specifier != '%')
+			if (specifier != '%' && specifier != 'c' && specifier != 's')
 				ret.zero_flag = 0;
 		}
 		else
 		{
 			ret.precision = 0;
-			if (specifier != '%')
+			if (specifier != '%' && specifier != 'c' && specifier != 's')
 				ret.zero_flag = 0;
 		}
 	}
