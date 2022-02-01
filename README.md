@@ -9,21 +9,25 @@
 	<br> => width가 주어진 경우, fadding용 공백의 출력과 인자 값 출력의 실행 순서를 변경
 <br>
 <br>
+
 - [0] : width가 주어진 경우, 출력될 인자의 길이가 width 값보다 작은만큼 '0' 출력 후 인자 출력.
 	- [-]flag와 함께 사용되면 warning과 함께 [-]flag의 기능만 적용되며 [0]flag의 기능 무시됨.
 	- width가 주어 지고, 해당하는 인자를 출력했을 때의 길이가 width보다 작은 경우에만 동작
 	- width가 주어지지 않았거나, 출력된 인자의 길이가 주어진 width보다 크면 warning 없이 [0]flag 무시 됨.
 <br>
 <br>
+
 - [+] : 출력하는 숫자가 양수인 경우, fadding 0와 해당 인자 출력 전 '+' 출력
 	- width가 인자 출력 길이보다 커서 fadding을 위한 공백이나 0이 발생하는 경우 그 공간 1칸을 대신함.
 <br>
 <br>
-- [ ] : 출력하는 숫자가 양수인 경우, fadding 0와 해당 인자 출력 전 ' ' 출력
+
+- [' '] : 출력하는 숫자가 양수인 경우, fadding 0와 해당 인자 출력 전 공백문자 출력
 	- width가 인자 출력 길이보다 커서 fadding을 위한 공백이나 0이 발생하는 경우 그 공간 1칸을 대신함.
 	- [+]flag와 함께 사용되면 warning과 함께 [+]flag의 기능만 적용되며 [ ]flag의 기능 무시됨.
 <br>
 <br>
+
 - [#] : %x, %X의 경우 진법표기 구분자 출력. (16진수 인자 및 fadding 0 출력 이전에 0x, 0X 출력)
 	- %x, %X를 제외한 경우 (%c, %s, %p, %d, %i, %u) [#]flag가 사용시 warning과 함께 [#]flag 무시됨.
 		<br>(subject에서 구현 안하는 %o(8진수 출력)에도 사용 됨 -> 숫자 출력 이전에 '0'출력)
@@ -46,7 +50,7 @@
 
 - flag인 [0] or [-], [+] or [ ], [#] 간에는 순서 상관 없이 조합 가능해야함.
 	- 5개의 flag를 동시에 사용하여 컴파일 시, warning으로 실행은 가능하지만, 동시 사용 불가능한 기능은 무시 됨.	<br>
-	->	'+' overrides a ' ' if both are used
+	->	'+' overrides a ' ' if both are used<br>
 		'-' overrides a '0' if both are used) in man printf
 	- ft_printf 에서는 함께 사용해서 출력 결과가 바뀔 수 있는 최대 동시 사용 가능 flag의 갯수  2개.<br>
 	-> subject를 한정하여 생각할 경우 [#]는 %x와 %X에만 적용되고,<br> %x, %X에는 [+] or [ ]가 기능무시 warning이므로, %x, %X에는 [#]과 [-] or [0]의 조합만 가능.<br> 이외 형식지정자의 경우 가능한 flag의 조합은 [-] or [0] 와 [+] or [ ] 의 조합 밖에 없음.
